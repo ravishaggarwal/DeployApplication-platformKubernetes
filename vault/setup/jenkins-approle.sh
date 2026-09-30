@@ -10,4 +10,6 @@ vault write auth/approle/role/jenkins-ci \
 echo "Role ID:"
 vault read -field=role_id auth/approle/role/jenkins-ci/role-id
 echo
-echo "Generate a Secret ID separately and store it in Jenkins Credentials."
+echo "Generate a Secret ID separately and store it in Jenkins Credentials by using below command."
+#vault write -f auth/approle/role/jenkins-ci/secret-id
+#this will be used by Jenkins to get the secret/jenkins/snyk & secret/jenkins/jfrog to connect to these tenancies.
