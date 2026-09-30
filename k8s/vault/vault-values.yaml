@@ -1,0 +1,19 @@
+server:
+  dev:
+    enabled: false
+  ha:
+    enabled: true
+    replicas: 3
+  dataStorage:
+    enabled: true
+  auditStorage:
+    enabled: true
+  service:
+    enabled: true
+
+injector:
+  enabled: true
+  replicas: 2
+
+global:
+  tlsDisable: false
