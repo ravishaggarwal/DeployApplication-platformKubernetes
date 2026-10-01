@@ -1,19 +1,15 @@
+global:
+  enabled: true
+  externalVaultAddr: "https://vault.auspost.company.com"
+  tlsDisable: false
 server:
-  dev:
-    enabled: false
-  ha:
-    enabled: true
-    replicas: 3
-  dataStorage:
-    enabled: true
-  auditStorage:
-    enabled: true
-  service:
-    enabled: true
-
+  enabled: false
 injector:
   enabled: true
   replicas: 2
-
-global:
-  tlsDisable: false
+  externalVaultAddr: "https://vault.auspost.company.com"
+  agentDefaults:
+    cpuLimit: "500m"
+    cpuRequest: "250m"
+    memLimit: "128Mi"
+    memRequest: "64Mi"
