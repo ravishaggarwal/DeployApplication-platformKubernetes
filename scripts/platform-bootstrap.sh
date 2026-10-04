@@ -8,13 +8,13 @@ aws eks update-kubeconfig --region "$AWS_REGION" --name "$CLUSTER_NAME"
 
 # AWS Load Balancer Controller. Terraform creates the pinned IAM policy and role.
 
-LBC_ROLE_ARN="${LBC_ROLE_ARN:?Set LBC_ROLE_ARN to terraform output aws_load_balancer_controller_role_arn}"
+LBC_ROLE_ARN="${LBC_ROLE_ARN:?<<Set LBC_ROLE_ARN to terraform output aws_load_balancer_controller_role_arn>>}"
 
 helm repo add eks https://aws.github.io/eks-charts
 helm repo update
 
-# The IAM service account is intentionally not auto-created here because
-# production environments should manage its trust policy centrally.
+# Creating the K8 SA for the IAM role created by terraform code.This Saws-load-balancer-controller pod in kub-system
+# use this controller SA to get AWS temp credentails to acces the AWS services being used by Application.
 helm upgrade --install aws-load-balancer-controller \
   eks/aws-load-balancer-controller \
   --namespace kube-system \

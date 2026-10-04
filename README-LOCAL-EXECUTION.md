@@ -17,18 +17,13 @@ docker version
 APP_VERSION=1.0.0 ./gradlew clean test bootJar
 ```
 
-Optional component tests:
-
 ```bash
 ./gradlew componentTest
 ```
 
-Confirm the generated JAR:
-
 ```bash
 ls -lh build/libs/auspost-health-1.0.0.jar
 ```
-
 
 ## 2. Build the local Docker image
 
@@ -39,43 +34,34 @@ docker build \
   -f container/Dockerfile \
   -t auspost-health:1.0.0 \
   .
-
 docker images auspost-health
 ```
-
-Docker Desktop Kubernetes can normally use images built in Docker Desktop's image store directly. The local Helm values below set `image.pullPolicy: Never`, so Kubernetes will not try to pull from JFrog.
-
-
 
 ## 3. Build the local Docker image Deploy to Kubernetes using Helm charts:
 
 ```bash
 helm upgrade --install auspost-health \
   ./helm/auspost-health \
-  --namespace auspost-local \
+  --namespace auspost-localMac \
   --create-namespace \
-  -f ./helm/auspost-health/values-local.yaml \
+  -f ./helm/auspost-health/values-localMac.yaml \
   --wait \
   --timeout 5m
 ```
 
-Verify:
-
 ```bash
-kubectl get pods,deploy,svc,hpa,pdb -n auspost-local
-kubectl rollout status deployment/auspost-health -n auspost-local
-kubectl logs -n auspost-local deployment/auspost-health
+kubectl get pods,deploy,svc,hpa,pdb -n auspost-localMac
+kubectl rollout status deployment/auspost-health -n auspost-localMac
+kubectl logs -n auspost-localMac deployment/auspost-health
 ```
 
-
-## 4. Test the application and Actuator endpoints
+## 4. Acceess the application K8 Pod
 
 ```bash
-kubectl exec -it -n auspost-local deployment/auspost-health -- /bin/sh
+kubectl exec -it -n auspost-localMac deployment/auspost-health -- /bin/sh
 ```
 
-
-Inside the debug container:
+## 5. The Applicaiton Actuator endpoints Output of application when I tested lcoally on my mac.
 
 ```bash
 curl http://localhost:8080/health
@@ -85,13 +71,14 @@ curl http://localhost:8080/actuator/health/liveness
 exit
 ```
 
+## 6. The Output of application when I tested lcoally on my mac.
 
 ```json
 {
   "status": "success",
   "message": "application is healthy",
   "version": "1.0.0",
-  "environment": "auspost-local"
+  "environment": "auspost-localMac"
 }
 ```
 
