@@ -20,7 +20,7 @@ Application config and secrets are injected from logical paths such as:
 ```text
 config/data/auspost-health/<env>
 sec_kv/data/auspost-health/<env>
-pki/issue/auspost-health
+
 ```
 The Vault Agent Injector renders files beneath `/vault/secrets/`; the application entrypoint consumes them as Spring configuration/certificate material.
 

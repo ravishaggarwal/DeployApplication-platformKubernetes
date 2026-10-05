@@ -8,6 +8,7 @@ JFROG_REGISTRY="${JFROG_REGISTRY:-jfrog.auspost.com}"
 JFROG_PROJECT="${JFROG_PROJECT:-AusPostJrog}"
 NAMESPACE="auspost-${ENVIRONMENT}"
 
+
 helm upgrade --install "${APP_NAME}" ./helm/auspost-health \
   --namespace "${NAMESPACE}" \
   --create-namespace \

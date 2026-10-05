@@ -1,3 +1,4 @@
+environment: localMac
 replicaCount: 2
 
 image:
@@ -16,8 +17,26 @@ service:
   port: 80
   targetPort: 8080
 
+#ingress:
+ # enabled: false
+
 ingress:
-  enabled: false
+  enabled: true
+  className: nginx
+
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+  hosts:
+    - host: myauspost.com.au
+      paths:
+        - path: /
+          pathType: Prefix
+
+  tls:
+    - secretName: auspost-local-tls
+      hosts:
+        - myauspost.com.au
 
 resources:
   requests:
@@ -34,6 +53,8 @@ autoscaling:
   maxReplicas: 4
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 75
+  customMetrics:
+    enabled: false
 
 
 pdb:

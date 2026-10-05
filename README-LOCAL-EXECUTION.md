@@ -2,6 +2,23 @@
 
 This README documents how to build and run the AusPost Spring Boot application locally on a Mac using Docker Desktop Kubernetes and Helm, with **Horizontal Pod Autoscaler (HPA)** and **PodDisruptionBudget (PDB)** enabled. .
 
+## The Final Output of application when I tested lcoally on my mac.(without SSL) - http://localhost:8080/health
+
+```bash
+kubectl exec -it -n auspost-localmac deployment/auspost-health -- /bin/sh
+curl http://localhost:8080/health
+```
+```json
+{
+  "status": "success",
+  "message": "application is healthy",
+  "version": "1.0.0",
+  "environment": "auspost-localMac"
+}
+```
+
+## Pre Requisites to Achieve this:
+
 Check the cluster and tools:
 
 ```bash
@@ -37,12 +54,12 @@ docker build \
 docker images auspost-health
 ```
 
-## 3. Build the local Docker image Deploy to Kubernetes using Helm charts:
+## 3. Update the values-localmac.yaml, Disable the Ingress as false and then Deploy to Kubernetes using Helm charts:
 
 ```bash
 helm upgrade --install auspost-health \
   ./helm/auspost-health \
-  --namespace auspost-localMac \
+  --namespace auspost-localmac \
   --create-namespace \
   -f ./helm/auspost-health/values-localMac.yaml \
   --wait \
@@ -55,13 +72,7 @@ kubectl rollout status deployment/auspost-health -n auspost-localMac
 kubectl logs -n auspost-localMac deployment/auspost-health
 ```
 
-## 4. Acceess the application K8 Pod
-
-```bash
-kubectl exec -it -n auspost-localMac deployment/auspost-health -- /bin/sh
-```
-
-## 5. The Applicaiton Actuator endpoints Output of application when I tested lcoally on my mac.
+## 4. The Applicaiton Actuator's endpoints Output of application when I tested lcoally on my mac.
 
 ```bash
 curl http://localhost:8080/health
@@ -71,14 +82,5 @@ curl http://localhost:8080/actuator/health/liveness
 exit
 ```
 
-## 6. The Output of application when I tested lcoally on my mac.
 
-```json
-{
-  "status": "success",
-  "message": "application is healthy",
-  "version": "1.0.0",
-  "environment": "auspost-localMac"
-}
-```
 
