@@ -49,11 +49,12 @@ ritikamahajan@Hanika-MacBook-Air auspost-health % curl -vk \
 > 
 * Request completely sent off
 < HTTP/2 200 
+< date: Tue, 06 Oct 2026 06:15:28 GMT
 < content-type: application/json
 < strict-transport-security: max-age=31536000; includeSubDomains
 < 
 * Connection #0 to host myauspost.com.au left intact
-{"status":"success","version":"1.0.0","message":"application is healthy","environment":"auspost-localmac"}%                                                                                                    MacBook-Air auspost-health %
+{"status":"success","version":"1.0.0","message":"application is healthy","environment":"auspost-localmac"}%  
 ```
 
 ## Pre Requisites to Achieve this:
@@ -130,10 +131,12 @@ helm upgrade --install auspost-health \
 Output:
 Release "auspost-health" has been upgraded. Happy Helming!
 NAME: auspost-health
+LAST DEPLOYED: Tue Oct  6 17:11:09 2026
 NAMESPACE: auspost-localmac
 STATUS: deployed
-REVISION: 2
+REVISION: 5
 DESCRIPTION: Upgrade complete
+TEST SUITE: None
 ```
 
 ```bash
@@ -145,10 +148,7 @@ kubectl get pods -n ingress-nginx
 kubectl get svc -n ingress-nginx
 kubectl logs -n auspost-localmac deployment/auspost-health
 
-kubectl port-forward \                   
-  -n ingress-nginx \     
-  svc/ingress-nginx-controller \
-  8443:443            
+kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8443:443            
 ```
 
 
