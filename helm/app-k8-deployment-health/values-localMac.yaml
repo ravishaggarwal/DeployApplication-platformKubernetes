@@ -2,7 +2,7 @@ environment: localMac
 replicaCount: 2
 
 image:
-  repository: auspost-health
+  repository: app-k8-deployment-health
   tag: "1.0.0"
   pullPolicy: Never
 
@@ -28,15 +28,15 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
   hosts:
-    - host: myauspost.com.au
+    - host: myAppK8Deployment.com.au
       paths:
         - path: /
           pathType: Prefix
 
   tls:
-    - secretName: auspost-local-tls
+    - secretName: appK8Deployment-local-tls
       hosts:
-        - myauspost.com.au
+        - myAppK8Deployment.com.au
 
 resources:
   requests:

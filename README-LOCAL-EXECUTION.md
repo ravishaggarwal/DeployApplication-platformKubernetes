@@ -1,11 +1,11 @@
-# AusPost Health — Local Deployment on Docker Desktop Kubernetes
+# appK8Deployment Health — Local Deployment on Docker Desktop Kubernetes
 
-This README documents how to build and run the AusPost Spring Boot application locally on a Mac using Docker Desktop Kubernetes and Helm, with **Horizontal Pod Autoscaler (HPA)** and **PodDisruptionBudget (PDB)** enabled. .
+This README documents how to build and run the appK8Deployment Spring Boot application locally on a Mac using Docker Desktop Kubernetes and Helm, with **Horizontal Pod Autoscaler (HPA)** and **PodDisruptionBudget (PDB)** enabled. .
 
 ## The Final Output of application when I tested lcoally on my mac.(without SSL) - http://localhost:8080/health
 
 ```bash
-kubectl exec -it -n auspost-localmac deployment/auspost-health -- /bin/sh
+kubectl exec -it -n appK8Deployment-localmac deployment/app-k8-deployment-health -- /bin/sh
 curl http://localhost:8080/health
 ```
 ```json
@@ -13,7 +13,7 @@ curl http://localhost:8080/health
   "status": "success",
   "message": "application is healthy",
   "version": "1.0.0",
-  "environment": "auspost-localMac"
+  "environment": "appK8Deployment-localMac"
 }
 ```
 
@@ -39,7 +39,7 @@ APP_VERSION=1.0.0 ./gradlew clean test bootJar
 ```
 
 ```bash
-ls -lh build/libs/auspost-health-1.0.0.jar
+ls -lh build/libs/app-k8-deployment-health-1.0.0.jar
 ```
 
 ## 2. Build the local Docker image
@@ -49,27 +49,27 @@ cd ..
 docker build \
   --build-arg APP_VERSION=1.0.0 \
   -f container/Dockerfile \
-  -t auspost-health:1.0.0 \
+  -t app-k8-deployment-health:1.0.0 \
   .
-docker images auspost-health
+docker images app-k8-deployment-health
 ```
 
 ## 3. Update the values-localmac.yaml, Disable the Ingress as false and then Deploy to Kubernetes using Helm charts:
 
 ```bash
-helm upgrade --install auspost-health \
-  ./helm/auspost-health \
-  --namespace auspost-localmac \
+helm upgrade --install app-k8-deployment-health \
+  ./helm/app-k8-deployment-health \
+  --namespace appK8Deployment-localmac \
   --create-namespace \
-  -f ./helm/auspost-health/values-localMac.yaml \
+  -f ./helm/app-k8-deployment-health/values-localMac.yaml \
   --wait \
   --timeout 5m
 ```
 
 ```bash
-kubectl get pods,deploy,svc,hpa,pdb -n auspost-localMac
-kubectl rollout status deployment/auspost-health -n auspost-localMac
-kubectl logs -n auspost-localMac deployment/auspost-health
+kubectl get pods,deploy,svc,hpa,pdb -n appK8Deployment-localMac
+kubectl rollout status deployment/app-k8-deployment-health -n appK8Deployment-localMac
+kubectl logs -n appK8Deployment-localMac deployment/app-k8-deployment-health
 ```
 
 ## 4. The Applicaiton Actuator's endpoints Output of application when I tested lcoally on my mac.

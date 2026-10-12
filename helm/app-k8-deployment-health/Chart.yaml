@@ -1,0 +1,6 @@
+apiVersion: v2
+name: app-k8-deployment-health
+description: appK8Deployment health application
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

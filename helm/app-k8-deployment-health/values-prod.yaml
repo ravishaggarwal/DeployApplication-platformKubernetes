@@ -1,36 +1,36 @@
 imagePullSecrets:
   - name: jfrog-registry
-replicaCount: 2
+replicaCount: 3
 resources:
   requests:
-    cpu: 200m
-    memory: 384Mi
-  limits:
     cpu: 500m
     memory: 512Mi
+  limits:
+    cpu: 1
+    memory: 1Gi
 autoscaling:
-  minReplicas: 2
-  maxReplicas: 4
+  minReplicas: 3
+  maxReplicas: 10
 podAnnotations:
   vault.hashicorp.com/agent-inject: "true"
   vault.hashicorp.com/agent-inject-status: "update"
-  vault.hashicorp.com/role: "auspost-health-sit4"
+  vault.hashicorp.com/role: "app-k8-deployment-health-prod"
   vault.hashicorp.com/auth-path: "auth/kubernetes"
-  vault.hashicorp.com/agent-inject-secret-application.properties: "config/data/auspost-health/sit4"
+  vault.hashicorp.com/agent-inject-secret-application.properties: "config/data/app-k8-deployment-health/prod"
   vault.hashicorp.com/agent-inject-template-application.properties: |
-    {{- with secret "config/data/auspost-health/sit4" -}}
+    {{- with secret "config/data/app-k8-deployment-health/prod" -}}
     app.message={{ .Data.data.APP_MESSAGE }}
     app.feature.enabled={{ .Data.data.APP_FEATURE_FLAG }}
     {{- end }}
-  vault.hashicorp.com/agent-inject-secret-sec.properties: "sec_kv/data/auspost-health/sit4"
+  vault.hashicorp.com/agent-inject-secret-sec.properties: "sec_kv/data/app-k8-deployment-health/prod"
   vault.hashicorp.com/agent-inject-template-sec.properties: |
-    {{- with secret "sec_kv/data/auspost-health/sit4" -}}
+    {{- with secret "sec_kv/data/app-k8-deployment-health/prod" -}}
     app.security.client-id={{ .Data.data.API_CLIENT_ID }}
     app.security.client-secret={{ .Data.data.API_CLIENT_SECRET }}
     {{- end }}
-  vault.hashicorp.com/agent-inject-secret-tls.crt: "pki/issue/auspost-health"
+  vault.hashicorp.com/agent-inject-secret-tls.crt: "pki/issue/app-k8-deployment-health"
   vault.hashicorp.com/agent-inject-template-tls.crt: |
-    {{- with pkiCert "pki/issue/auspost-health" "common_name=myauspost.com.au" "ttl=24h" -}}
+    {{- with pkiCert "pki/issue/app-k8-deployment-health" "common_name=myAppK8Deployment.com.au" "ttl=24h" -}}
     {{ .Cert }}
     {{- end }}
   vault.hashicorp.com/agent-inject-file-tls.crt: "tls.crt"

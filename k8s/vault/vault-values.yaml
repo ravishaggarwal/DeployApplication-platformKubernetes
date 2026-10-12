@@ -1,13 +1,13 @@
 global:
   enabled: true
-  externalVaultAddr: "https://vault.auspost.company.com"
+  externalVaultAddr: "https://vault.appK8Deployment.company.com"
   tlsDisable: false
 server:
   enabled: false
 injector:
   enabled: true
   replicas: 2
-  externalVaultAddr: "https://vault.auspost.company.com"
+  externalVaultAddr: "https://vault.appK8Deployment.company.com"
   agentDefaults:
     cpuLimit: "500m"
     cpuRequest: "250m"
