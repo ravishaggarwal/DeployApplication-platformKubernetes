@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "auspost-health.fullname" . }}
+  name: {{ include "app-k8-deployment-health.fullname" . }}
   labels:
-    {{- include "auspost-health.labels" . | nindent 4 }}
+    {{- include "app-k8-deployment-health.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 5
@@ -14,12 +14,12 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "auspost-health.name" . }}
+      app.kubernetes.io/name: {{ include "app-k8-deployment-health.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "auspost-health.name" . }}
+        app.kubernetes.io/name: {{ include "app-k8-deployment-health.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
@@ -33,7 +33,7 @@ spec:
           whenUnsatisfiable: ScheduleAnyway
           labelSelector:
             matchLabels:
-              app.kubernetes.io/name: {{ include "auspost-health.name" . }}
+              app.kubernetes.io/name: {{ include "app-k8-deployment-health.name" . }}
               app.kubernetes.io/instance: {{ .Release.Name }}
           matchLabelKeys:
             - pod-template-hash
@@ -43,17 +43,17 @@ spec:
           whenUnsatisfiable: ScheduleAnyway
           labelSelector:
             matchLabels:
-              app.kubernetes.io/name: {{ include "auspost-health.name" . }}
+              app.kubernetes.io/name: {{ include "app-k8-deployment-health.name" . }}
               app.kubernetes.io/instance: {{ .Release.Name }}
           matchLabelKeys:
             - pod-template-hash
-      serviceAccountName: {{ default (include "auspost-health.fullname" .) .Values.serviceAccount.name }}
+      serviceAccountName: {{ default (include "app-k8-deployment-health.fullname" .) .Values.serviceAccount.name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
-        - name: auspost-health
+        - name: app-k8-deployment-health
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:

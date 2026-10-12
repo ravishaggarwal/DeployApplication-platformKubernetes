@@ -10,7 +10,7 @@ AWS_REGION="${AWS_REGION:-ap-southeast-2}"
 
 VAULT_AUTH_PATH="${VAULT_AUTH_PATH:-kubernetes}"
 
-APP_NAME="auspost-health"
+APP_NAME="app-k8-deployment-health"
 
 
 echo "Using Enterprise Vault:"
@@ -75,7 +75,7 @@ vault write \
 for env in dev sit1 sit4 perf prod
 do
 
-    NAMESPACE="auspost-${env}"
+    NAMESPACE="appK8Deployment-${env}"
     POLICY="${APP_NAME}-${env}"
     ROLE="${APP_NAME}-${env}"
     

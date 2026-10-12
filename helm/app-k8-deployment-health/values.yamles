@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: "jfrog.example.com/AusPostJrog/auspost-health"
+  repository: "jfrog.example.com/appK8DeploymentJrog/app-k8-deployment-health"
   tag: "1.0.0"
   pullPolicy: IfNotPresent
 
@@ -18,23 +18,23 @@ serviceAccount:
 podAnnotations:
   vault.hashicorp.com/agent-inject: "true"
   vault.hashicorp.com/agent-inject-status: "update"
-  vault.hashicorp.com/role: "auspost-health"
+  vault.hashicorp.com/role: "app-k8-deployment-health"
   vault.hashicorp.com/auth-path: "auth/kubernetes"
-  vault.hashicorp.com/agent-inject-secret-application.properties: "config/data/auspost-health/dev"
+  vault.hashicorp.com/agent-inject-secret-application.properties: "config/data/app-k8-deployment-health/dev"
   vault.hashicorp.com/agent-inject-template-application.properties: |
-    {{- with secret "config/data/auspost-health/dev" -}}
+    {{- with secret "config/data/app-k8-deployment-health/dev" -}}
     app.message={{ .Data.data.APP_MESSAGE }}
     app.feature.enabled={{ .Data.data.APP_FEATURE_FLAG }}
     {{- end }}
-  vault.hashicorp.com/agent-inject-secret-sec.properties: "sec_kv/data/auspost-health/dev"
+  vault.hashicorp.com/agent-inject-secret-sec.properties: "sec_kv/data/app-k8-deployment-health/dev"
   vault.hashicorp.com/agent-inject-template-sec.properties: |
-    {{- with secret "sec_kv/data/auspost-health/dev" -}}
+    {{- with secret "sec_kv/data/app-k8-deployment-health/dev" -}}
     app.security.client-id={{ .Data.data.API_CLIENT_ID }}
     app.security.client-secret={{ .Data.data.API_CLIENT_SECRET }}
     {{- end }}
-  vault.hashicorp.com/agent-inject-secret-tls.crt: "pki/issue/auspost-health"
+  vault.hashicorp.com/agent-inject-secret-tls.crt: "pki/issue/app-k8-deployment-health"
   vault.hashicorp.com/agent-inject-template-tls.crt: |
-    {{- with pkiCert "pki/issue/auspost-health" "common_name=myauspost.com.au" "ttl=24h" -}}
+    {{- with pkiCert "pki/issue/app-k8-deployment-health" "common_name=myAppK8Deployment.com.au" "ttl=24h" -}}
     {{ .Cert }}
     {{- end }}
   vault.hashicorp.com/agent-inject-file-tls.crt: "tls.crt"
@@ -64,7 +64,7 @@ service:
 ingress:
   enabled: true
   className: alb
-  host: myauspost.com.au
+  host: myAppK8Deployment.com.au
   path: /
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -73,7 +73,7 @@ ingress:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/certificate-arn: ""
-    alb.ingress.kubernetes.io/group.name: auspost-health
+    alb.ingress.kubernetes.io/group.name: app-k8-deployment-health
   tls: []
 
 resources:
@@ -91,6 +91,10 @@ autoscaling:
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 75
 
+  customMetrics:
+    enabled: false
+    metrics: []
+
 pdb:
   enabled: true
   minAvailable: 1
@@ -104,3 +108,4 @@ probes:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+≈≈

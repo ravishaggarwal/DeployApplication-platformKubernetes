@@ -2,11 +2,11 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "auspost-health.fullname" . }}
+  name: {{ include "app-k8-deployment-health.fullname" . }}
 spec:
   minAvailable: {{ .Values.pdb.minAvailable }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "auspost-health.name" . }}
+      app.kubernetes.io/name: {{ include "app-k8-deployment-health.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
